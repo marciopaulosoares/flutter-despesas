@@ -1,57 +1,15 @@
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
+import 'package:flutter_despesas/widgets/transaction_list.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './models/transaction.dart';
-import './widgets/userTransactions.dart';
-
+import './widgets/transaction_add.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class DemoLocalizations {
-  DemoLocalizations(this.locale);
-
-  final Locale locale;
-
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
-  }
-
-  static Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'title': 'Hello World',
-    },
-    'pt': {
-      'title': 'Hola Mundo',
-    },
-  };
-
-  String get title {
-    return _localizedValues[locale.languageCode]['title'];
-  }
-}
-
-class DemoLocalizationsDelegate extends LocalizationsDelegate<DemoLocalizations> {
-  const DemoLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) => ['en', 'pt'].contains(locale.languageCode);
-
-  @override
-  Future<DemoLocalizations> load(Locale locale) {
-    // Returning a SynchronousFuture here because an async "load" operation
-    // isn't needed to produce an instance of DemoLocalizations.
-    return SynchronousFuture<DemoLocalizations>(DemoLocalizations(locale));
-  }
-
-  @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
-}
-
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateTitle: (BuildContext context) => DemoLocalizations.of(context).title,
@@ -97,35 +55,112 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-   
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  final List<Transaction> _userTransactions = [
+    Transaction(id: '01', title: 'comida', amount: 56.89, date: DateTime.now()),
+    Transaction(id: '02', title: 'tenis', amount: 20.89, date: DateTime.now()),
+    Transaction(id: '03', title: 'remedio', amount: 10.89, date: DateTime.now()),
+    Transaction(id: '04', title: 'despesas', amount: 19.89, date: DateTime.now())
   ];
 
-  // String titleInput;
-  // String amountInput;
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  void _addNewTransaction(String pTitle, double pAmount) {
+    final newTx = Transaction(
+        title: pTitle,
+        amount: pAmount,
+        date: DateTime.now(),
+        id: DateTime.now().toString()
+    );
+
+    setState(() {
+      _userTransactions.add(newTx);
+    });
+  }
+
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return TransactionAdd(_addNewTransaction);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _startAddNewTransaction(context),
+          )
+        ],
       ),
       body: SingleChildScrollView(
-              child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: double.infinity,
-                          child: Card(color: Colors.red, child: Text('chart')),
-                        ),
-                        UserTransactions(),
-                      ],
-                    ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Card(color: Colors.red, child: Text('chart')),
+            ),
+            TransactionList(userTransactions:  _userTransactions),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
+}
+
+class DemoLocalizations {
+  DemoLocalizations(this.locale);
+
+  final Locale locale;
+
+  static DemoLocalizations of(BuildContext context) {
+    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+  }
+
+  static Map<String, Map<String, String>> _localizedValues = {
+    'en': {
+      'title': 'Hello World',
+    },
+    'pt': {
+      'title': 'Hola Mundo',
+    },
+  };
+
+  String get title {
+    return _localizedValues[locale.languageCode]['title'];
+  }
+}
+
+class DemoLocalizationsDelegate
+    extends LocalizationsDelegate<DemoLocalizations> {
+  const DemoLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => ['en', 'pt'].contains(locale.languageCode);
+
+  @override
+  Future<DemoLocalizations> load(Locale locale) {
+    // Returning a SynchronousFuture here because an async "load" operation
+    // isn't needed to produce an instance of DemoLocalizations.
+    return SynchronousFuture<DemoLocalizations>(DemoLocalizations(locale));
+  }
+
+  @override
+  bool shouldReload(DemoLocalizationsDelegate old) => false;
 }
