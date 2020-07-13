@@ -13,14 +13,14 @@ class TransactionListItem extends StatelessWidget {
         children: <Widget>[
           Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+              decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColor)),
               padding: EdgeInsets.all(15),
               child: Text(
                 'R\$ ${tx.amount.toStringAsFixed(2)}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.orange),
+                    color: Theme.of(context).primaryColor),
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

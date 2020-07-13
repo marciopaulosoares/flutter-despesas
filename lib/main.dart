@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         // from the list (English, in this case).
         return Locale('pt', '');
       },
-      title: 'Flutter Demo',
+      title: 'Expenses',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Expenses'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
