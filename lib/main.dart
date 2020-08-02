@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
 import 'package:flutter_despesas/widgets/transaction_list.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import './widgets/chart.dart';
 import './models/transaction.dart';
 import './widgets/transaction_add.dart';
 
@@ -78,6 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // Transaction(id: '04', title: 'despesas', amount: 19.89, date: DateTime.now())
   ];
 
+  List<Transaction> get _recentTransactions{
+      return _userTransactions.where((transaction){
+        var referenceDate = DateTime.now().subtract(Duration(days: 7));
+         return transaction.date.isAfter(referenceDate);
+      }).toList();
+  }
+
   void _addNewTransaction(String pTitle, double pAmount) {
     final newTx = Transaction(
         title: pTitle,
@@ -116,10 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(color: Colors.red, child: Text('chart')),
-            ),
+            Chart(_recentTransactions),
             TransactionList(userTransactions:  _userTransactions),
           ],
         ),
