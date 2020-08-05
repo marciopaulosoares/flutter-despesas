@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionAdd extends StatefulWidget {
   final Function addTx;
@@ -11,8 +12,8 @@ class TransactionAdd extends StatefulWidget {
 
 class _TransactionAddState extends State<TransactionAdd> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+  DateTime selectedDate;
 
   void submitData() {
     final _title = titleController.text;
@@ -22,11 +23,23 @@ class _TransactionAddState extends State<TransactionAdd> {
       return;
     }
 
-    print(_title);
-    print(_amount);
     widget.addTx(_title, _amount);
 
     Navigator.of(context).pop();
+  }
+
+  void presentDatePicker(){
+    var currentYear = DateTime.now().year;
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(currentYear), lastDate: DateTime.now())
+    .then((selected) {
+      if(selected == null){
+        return;
+      }
+      setState(() {
+         selectedDate = selected;
+      });
+     
+    });
   }
 
   @override
@@ -49,10 +62,24 @@ class _TransactionAddState extends State<TransactionAdd> {
               controller: amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
-            FlatButton(
+            Container(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Expanded(child: Text(selectedDate == null ? 'Choose a date' : 'Picked date: ${DateFormat.yMd().format(selectedDate)}')),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text('Select a date', style: TextStyle(fontWeight: FontWeight.bold),), 
+                    onPressed: presentDatePicker,
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
               onPressed: submitData,
               child: Text('Add Transaction'),
-              textColor: Colors.orange,
+              textColor: Colors.white,
+              color: Colors.orange[300],
             )
           ],
         ),

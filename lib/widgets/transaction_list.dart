@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_despesas/widgets/transaction_list_item_tile.dart';
 import './transaction_empty.dart';
-import './transaction_list_item.dart';
-
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
@@ -22,7 +21,7 @@ class TransactionList extends StatelessWidget {
                                             scrollDirection: Axis.vertical,
                                             itemCount: userTransactions.length,
                                             itemBuilder: (ctx, index){
-                                              return TransactionListItem(userTransactions[index]);
+                                              return TransactionListItemTile(userTransactions[index]);
                                             }),
           );
   }
