@@ -13,17 +13,22 @@ class TransactionAdd extends StatefulWidget {
 class _TransactionAddState extends State<TransactionAdd> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-  DateTime selectedDate;
+  DateTime _selectedDate;
 
   void submitData() {
-    final _title = titleController.text;
-    final _amount = double.parse(amountController.text);
 
-    if (_title.isEmpty || _amount <= 0) {
+    if(amountController.text.isEmpty){
       return;
     }
 
-    widget.addTx(_title, _amount);
+    final _title = titleController.text;
+    final _amount = double.parse(amountController.text);
+
+    if (_title.isEmpty || _amount <= 0 || _selectedDate == null) {
+      return;
+    }
+
+    widget.addTx(_title, _amount, _selectedDate);
 
     Navigator.of(context).pop();
   }
@@ -36,7 +41,7 @@ class _TransactionAddState extends State<TransactionAdd> {
         return;
       }
       setState(() {
-         selectedDate = selected;
+         _selectedDate = selected;
       });
      
     });
@@ -66,7 +71,7 @@ class _TransactionAddState extends State<TransactionAdd> {
               height: 70,
               child: Row(
                 children: <Widget>[
-                  Expanded(child: Text(selectedDate == null ? 'Choose a date' : 'Picked date: ${DateFormat.yMd().format(selectedDate)}')),
+                  Expanded(child: Text(_selectedDate == null ? 'Choose a date' : 'Picked date: ${DateFormat.yMd().format(_selectedDate)}')),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     child: Text('Select a date', style: TextStyle(fontWeight: FontWeight.bold),), 
