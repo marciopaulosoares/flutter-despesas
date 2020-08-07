@@ -6,8 +6,9 @@ import '../models/transaction.dart';
 class TransactionListItemTile extends StatelessWidget {
 
   final Transaction tx;
+  final Function removeTransationFN;
 
-  TransactionListItemTile(this.tx);
+  TransactionListItemTile(this.tx, this.removeTransationFN);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,11 @@ class TransactionListItemTile extends StatelessWidget {
         ),
         title: Text(tx.title, style: Theme.of(context).textTheme.headline6,),
         subtitle: Text(DateFormat.yMMMMd().format(tx.date)),
+        trailing: IconButton(
+                              icon: Icon(Icons.delete_forever), 
+                              color: Theme.of(context).errorColor,
+                              onPressed: () => removeTransationFN(tx.id),
+                            ),
       ),
     );
   }

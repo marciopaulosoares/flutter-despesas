@@ -12,7 +12,7 @@ class ChartBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print('#### spedingPctOfTotal:  $spedingPctOfTotal');
+    //print('#### spedingPctOfTotal:  $spedingPctOfTotal');
 
     return Column(
       children: <Widget>[

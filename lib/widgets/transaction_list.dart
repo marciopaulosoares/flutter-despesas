@@ -6,9 +6,9 @@ import '../models/transaction.dart';
 class TransactionList extends StatelessWidget {
 
   final List<Transaction> userTransactions;
-  TransactionList({this.userTransactions});
+  final Function removeTransationFN;
 
-  
+  TransactionList({this.userTransactions, this.removeTransationFN});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TransactionList extends StatelessWidget {
                                             scrollDirection: Axis.vertical,
                                             itemCount: userTransactions.length,
                                             itemBuilder: (ctx, index){
-                                              return TransactionListItemTile(userTransactions[index]);
+                                              return TransactionListItemTile(userTransactions[index],removeTransationFN);
                                             }),
           );
   }

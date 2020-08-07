@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
       },
       title: 'Expenses',
       theme: ThemeData(
+        errorColor: Colors.red[900],
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -52,7 +53,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'OpenSans',
         appBarTheme: AppBarTheme(
-                    textTheme: ThemeData.light().textTheme.copyWith(
+                    
+                    textTheme: ThemeData.light().textTheme.copyWith
+                    (
                           title:TextStyle(
                             fontFamily: 'QuickSand',
                             fontSize: 30,
@@ -99,12 +102,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _removeTransation(String id){
+    setState(() {
+        _userTransactions.removeWhere((element) {
+            return element.id == id;
+        });
+    });
+  }
+
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
           return TransactionAdd(_addNewTransaction);
-        });
+    });
   }
 
   @override
@@ -125,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(userTransactions:  _userTransactions),
+            TransactionList(userTransactions:  _userTransactions, removeTransationFN: _removeTransation,),
           ],
         ),
       ),
