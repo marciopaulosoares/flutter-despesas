@@ -13,16 +13,13 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-          Container(
-            height: 300,
-            child: userTransactions.isEmpty 
+          userTransactions.isEmpty 
                           ? TransactionEmpty()
                           : ListView.builder(
                                             scrollDirection: Axis.vertical,
                                             itemCount: userTransactions.length,
                                             itemBuilder: (ctx, index){
                                               return TransactionListItemTile(userTransactions[index],removeTransationFN);
-                                            }),
-          );
+                                            });
   }
 }

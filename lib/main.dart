@@ -120,32 +120,47 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Expenses'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(userTransactions:  _userTransactions, removeTransationFN: _removeTransation,),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
-    );
+
+    final _appBar = AppBar(
+            title: Text('Expenses'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              )
+            ],
+          );
+
+
+        final _floatActionBtn = FloatingActionButton(
+                                      child: Icon(Icons.add),
+                                      onPressed: () => _startAddNewTransaction(context),
+                                  );
+                                
+
+
+                var scaffold = Scaffold(
+                        appBar: _appBar,
+                        body: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                height: (MediaQuery.of(context).size.height  - _appBar.preferredSize.height) * 0.4,
+                                child: Chart(_recentTransactions)
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height)  * 0.45,
+                                child: TransactionList(userTransactions:  _userTransactions, removeTransationFN: _removeTransation)
+                              )
+                            ],
+                          ),
+                        ),
+                        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                        floatingActionButton:  _floatActionBtn,
+              );
+        return scaffold;
   }
 }
 
